@@ -1,0 +1,124 @@
+//calc.cpp
+//Jacob Wilks
+//jwilks
+
+#include <stdio.h>
+#include <cmath>
+#include <string>
+#include <iostream>
+#include "list.h"
+#include "node.h"
+#include <cstdlib>
+#include "stack.h"
+
+using namespace std;
+
+//isoperator made to check if the input is an operator
+
+bool isoperator(char input)
+{
+  if(input  == '*' || input  == '-' || input == '+' || input == '/' || input  == '^')
+  {
+    return true;
+  }
+  return false;
+}
+
+
+int main()
+{
+  Stack <double> astack;
+  double result;
+  char temp = cin.peek();
+
+   while( cin.peek() != EOF){
+
+
+  //if its a digit it or period it will push number onto the stack
+    if (isdigit(cin.peek())|| cin.peek() == '.')
+
+    {
+      cin>>result;
+      astack.push(result);
+    }//if
+
+    //if its a space it will ignore
+    else if (isspace(cin.peek()))
+    {
+      cin.ignore();
+    }
+
+    //isoperator to check if input is a operator
+    //if it is it will take the values and pop them off and based on the operator perform the correct function
+   // else if(isoperator(cin.peek()))
+    else if (isoperator(temp))
+    {
+      char op;
+      cin>>op;
+      //check if this is empty --  if empty send error message
+      if(astack.empty())
+      {
+        cerr<<"Invalid Expression."<<endl;
+        return 1;
+      }
+      double rhs = astack.top();
+      astack.pop();
+      //check if this is empty -- if 
+      if (astack.empty())
+      {
+        cerr<<"Invalid Expression."<<endl;
+        return 1;
+      }
+      double lhs = astack.top();
+      astack.pop();
+      
+
+      //after math problem push back to stack
+        if (op == '*')
+          result = lhs * rhs;
+        else if (op == '/')
+          result = lhs / rhs;
+        else if (op == '-')
+          result = lhs - rhs;
+        else if (op == '+')
+          result = lhs + rhs;
+        else if (op == '^')
+        {
+          if (floor(lhs) == lhs)
+            pow(lhs,rhs);
+          else
+          {
+            cerr<<"Invalid Expression."<<endl;
+            return 1;
+          }
+        }//else
+        astack.push(result);
+    }
+    else
+    {
+      //print error code here
+      cerr<<"Invalid Expression.";
+      return 1;
+   }
+
+
+
+
+  }//while
+   if (astack.empty())
+   {
+     cerr<<"Invalid Expression."<<endl;
+     return 1;
+   }
+   if (astack.top() == astack.empty())
+   {
+     cout << astack.top();
+   }
+//check if stack is empty. print out top and pop. Check if list is empty 
+//dont print top unless top is empty double check before printing
+  return 0;
+
+}//main
+
+
+
